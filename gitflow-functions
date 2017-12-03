@@ -87,40 +87,26 @@ gitflow_set_rc_release() {
 }
 
 gitflow_get_current_version() {
-	CURRENT_VERSION=$(grep -m1 "GITFLOW_VERSION=" $ROOTDIR/git-flow-version | cut -f2 -d"=")
+	CURRENT_VERSION=$(cat $ROOTDIR/version | cut -f2 -d"=")
 	echo "$CURRENT_VERSION"
 }
 
 #
-# Create an up to date AUTHORS file
+# Create an up to date authors file
 #
 gitflow_update_authors() {
 	ROOTDIR=$(git rev-parse --show-toplevel)
 	AUTHORS=$(mktemp --suffix=.gitflow)
 
-	# Create an up to date AUTHORS file
-	echo "git-flow AVH Authors
-
-This software consists of voluntary contributions made by many
-individuals. For exact contribution history, see the revision history
-(Changes.mdown) and logs, available at
-http://github.com/petervanderdoes/gitflow.
-
-" > $AUTHORS
+	# Create an up to date authors file
 	git shortlog -ns --no-merges | cut -f2 >> $AUTHORS
-	echo "
-
-Portions of the project are derived from other open source works are clearly
-marked.
-
-This file is auto generated, any changes will be lost." >> $AUTHORS
 
 	# Check if the new file is different
 	# If it's not there is no need to copy it and commit
-	diff $AUTHORS $ROOTDIR/AUTHORS > /dev/null 2>&1
+	diff $AUTHORS $ROOTDIR/authors > /dev/null 2>&1
 	DIFF=$?
 	if [ $DIFF -ne 0 ]; then
-		cp $AUTHORS $ROOTDIR/AUTHORS
+		cp $AUTHORS $ROOTDIR/authors
 		git commit AUTHORS -m "Update of the contributers."
 	fi
 	# Clean up
