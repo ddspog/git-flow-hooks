@@ -99,21 +99,7 @@ gitflow_update_authors() {
 	AUTHORS=$(mktemp --suffix=.gitflow)
 
 	# Create an up to date AUTHORS file
-	echo "git-flow AVH Authors
-
-This software consists of voluntary contributions made by many
-individuals. For exact contribution history, see the revision history
-and logs, available at
-http://github.com/petervanderdoes/gitflow.
-
-" > $AUTHORS
 	git shortlog -ns --no-merges | cut -f2 >> $AUTHORS
-	echo "
-
-Portions of the project are derived from other open source works are clearly
-marked.
-
-This file is auto generated, any changes will be lost." >> $AUTHORS
 
 	# Check if the new file is different
 	# If it's not there is no need to copy it and commit
