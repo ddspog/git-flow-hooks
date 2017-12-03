@@ -11,7 +11,7 @@ VERSION=$1
 ORIGIN=$2
 BRANCH=$3
 
-# Implement your script aere.
+# Implement your script here.
 . "$HOOKS_DIR"/gitflow-functions
 ROOTDIR=$(git rev-parse --show-toplevel)
 
